@@ -21,6 +21,13 @@
 
 include_recipe "postgresql::client"
 
+directory node['postgresql']['dir'] do
+  owner "postgres"
+  group "postgres"
+  recursive true
+  action :create
+end
+
 node['postgresql']['server']['packages'].each do |pg_pack|
 
   package pg_pack

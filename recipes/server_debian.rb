@@ -34,6 +34,11 @@ node['postgresql']['server']['packages'].each do |pg_pack|
 
 end
 
+execute "/usr/lib/postgresql/#{node['postgresql']['version']}/bin/initdb -E UTF8 --locale en_US.UTF-8 -D #{node['postgresql']['dir']}" do
+ user 'postgres'
+ not_if { ::FileTest.exist?("/var/lib/pgsql/#{node['postgresql']['version']}") }
+end
+
 service "postgresql" do
   service_name node['postgresql']['server']['service_name']
   supports :restart => true, :status => true, :reload => true
